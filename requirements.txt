@@ -3,4 +3,4 @@ langchain
 langchain-groq
 langchain-community
 langgraph
-duckduckgo-search
+duckduckgo-search==6.3.7

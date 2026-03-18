@@ -1,10 +1,8 @@
-
 import streamlit as st
 from langchain_groq import ChatGroq
 from langchain_community.tools import DuckDuckGoSearchRun
 from langgraph.prebuilt import create_react_agent
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
-from langchain.agents import create_agent
 
 # ─── PAGE CONFIG ────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -309,17 +307,14 @@ with st.sidebar:
     st.markdown('<div class="sidebar-section">Model</div>', unsafe_allow_html=True)
     model_choice = st.selectbox(
         "LLM",
-        ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "mixtral-8x7b-32768","llama3-groq-70b-8192-tool-use-preview"],
+        ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "mixtral-8x7b-32768", "llama3-groq-70b-8192-tool-use-preview"],
         label_visibility="collapsed",
     )
 
-    # ── Tool Toggle — THE FEATURE ──────────────────────────────────────────
+    # ── Tool Toggle ──────────────────────────────────────────────────────────
     st.markdown('<div class="sidebar-section">Tools</div>', unsafe_allow_html=True)
-
-    # STEP 1: The toggle switch
     use_search = st.toggle("Enable Web Search", value=True)
 
-    # STEP 2: Show visual feedback on tool state
     if use_search:
         st.markdown(
             '<span class="tool-badge on">🌐 duckduckgo_search &nbsp;ON</span>',
@@ -361,8 +356,6 @@ with st.sidebar:
 
 
 # ─── MAIN PANEL ─────────────────────────────────────────────────────────────
-
-# Header
 col_title, col_status = st.columns([3, 1])
 with col_title:
     st.markdown('<div style="font-family:\'IBM Plex Mono\',monospace;font-size:1.25rem;font-weight:500;color:#e2e8f0;padding-top:0.2rem">AI Web Agent</div>', unsafe_allow_html=True)
@@ -405,36 +398,25 @@ if user_query := st.chat_input("Ask me anything…"):
     # ── 4A: Initialise the LLM ──
     llm = ChatGroq(
         model=model_choice,
-        temperature=0,          # 0 = deterministic; best for tool-calling agents
+        temperature=0,
         api_key=user_api_key,
     )
 
-    # ── 4B: THE TOOL TOGGLE LOGIC ──────────────────────────────────────────
-    web_tool = DuckDuckGoSearchRun(
-        name="duckduckgo_search",
-        description="Search the internet for current events and up-to-date information.",
-    )
-
+    # ── 4B: THE TOOL TOGGLE LOGIC — web_tool only created when needed ───────
     if use_search:
-        active_tools = [web_tool]          # Web search ON
+        web_tool = DuckDuckGoSearchRun(
+            name="duckduckgo_search",
+            description="Search the internet for current events and up-to-date information.",
+        )
+        active_tools = [web_tool]
     else:
-        active_tools = []                  # Web search OFF — no tools
+        active_tools = []
 
     # ── 4C: Build agent with active_tools ──────────────────────────────────
-    agent = create_react_agent(
-        llm,
-        tools=active_tools
-    )
+    agent = create_react_agent(llm, tools=active_tools)
 
-
-    sys_prompt = "You are a live research assistant. You MUST use the web search tool to find current information before answering. Synthesize the results cleanly."
-
-
-  # C. THE BRIDGE: Translate Streamlit Memory -> LangGraph Memory
-    langgraph_history = [SystemMessage(content=sys_prompt)]
-
-    # ── 4D: Build LangGraph-format history (bridge pattern) ──
-
+    # ── 4D: Build LangGraph-format history (bridge pattern) ─────────────────
+    langgraph_history = [SystemMessage(content=system_prompt)]
     for m in st.session_state.messages:
         if m["role"] == "user":
             langgraph_history.append(HumanMessage(content=m["content"]))
@@ -469,4 +451,4 @@ if user_query := st.chat_input("Ask me anything…"):
     # ── Save assistant reply & update counter ──
     st.session_state.messages.append({"role": "assistant", "content": bot_answer})
     st.session_state.msg_count += 1
-    st.rerun()  # refresh sidebar stats
+    st.rerun()

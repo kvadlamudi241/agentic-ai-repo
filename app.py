@@ -400,6 +400,7 @@ if user_query := st.chat_input("Ask me anything…"):
         model=model_choice,
         temperature=0,
         api_key=user_api_key,
+        model_kwargs={"parallel_tool_calls": False},
     )
 
     # ── 4B: THE TOOL TOGGLE LOGIC — web_tool only created when needed ───────

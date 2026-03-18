@@ -332,7 +332,7 @@ with st.sidebar:
     st.markdown('<div class="sidebar-section">System Prompt</div>', unsafe_allow_html=True)
     system_prompt = st.text_area(
         "Instructions",
-        value="You are a research assistant. When web search is enabled, always use it to find current information before answering. When it is disabled, answer from your training knowledge and clearly say so.",
+        value="You are a Senior research assistant. When web search is enabled, always use it to find current information before answering. When it is disabled, answer from your training knowledge and clearly say so.",
         height=120,
         label_visibility="collapsed",
     )

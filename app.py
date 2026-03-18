@@ -6,7 +6,7 @@ from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
 # ─── PAGE CONFIG ────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="DCS Web Agent",
+    page_title="MY Web Agent",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -297,7 +297,7 @@ if "search_count" not in st.session_state: st.session_state.search_count = 0
 
 # ─── SIDEBAR ────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown('<div class="app-header"><div><div class="title">⬡ DCS AI Agent</div><div class="subtitle">LangGraph · Groq · DuckDuckGo</div></div></div>', unsafe_allow_html=True)
+    st.markdown('<div class="app-header"><div><div class="title">⬡ MY AI Agent</div><div class="subtitle">LangGraph · Groq · DuckDuckGo</div></div></div>', unsafe_allow_html=True)
 
     # ── Credentials ──
     st.markdown('<div class="sidebar-section">Credentials</div>', unsafe_allow_html=True)
@@ -358,7 +358,7 @@ with st.sidebar:
 # ─── MAIN PANEL ─────────────────────────────────────────────────────────────
 col_title, col_status = st.columns([3, 1])
 with col_title:
-    st.markdown('<div style="font-family:\'IBM Plex Mono\',monospace;font-size:1.25rem;font-weight:500;color:#e2e8f0;padding-top:0.2rem">DCS AI Web Agent</div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-family:\'IBM Plex Mono\',monospace;font-size:1.25rem;font-weight:500;color:#e2e8f0;padding-top:0.2rem">MY AI Web Agent</div>', unsafe_allow_html=True)
 with col_status:
     if use_search:
         st.markdown('<div class="status-row active"><div class="status-dot green"></div>Web search active</div>', unsafe_allow_html=True)

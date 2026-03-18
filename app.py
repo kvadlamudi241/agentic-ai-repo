@@ -6,7 +6,7 @@ from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
 # ─── PAGE CONFIG ────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="AI Web Agent",
+    page_title="DCS Web Agent",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded",

@@ -307,7 +307,7 @@ with st.sidebar:
     st.markdown('<div class="sidebar-section">Model</div>', unsafe_allow_html=True)
     model_choice = st.selectbox(
         "LLM",
-        ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"],
+        ["llama-3.3-70b-versatile", "llama-3.1-8b-instant","qwen/qwen3-32b"],
         label_visibility="collapsed",
     )
 
